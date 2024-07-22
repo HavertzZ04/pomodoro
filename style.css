@@ -41,7 +41,23 @@ section {
     width: 45rem;
 }
 
+/*.edit {
+    background-color: #ffffff;
+    color: #000000;
+
+    border-radius: 0.5rem;
+    box-shadow: 0 8px 32px 0 rgba(18, 0, 41, 0.297);
+    border: 1px solid #06001012;
+
+    font-family: "Roboto Mono", monospace;
+    font-size: 1.15rem;
+    padding: 1rem;
+    width: 5rem;
+}*/
+
+
 .timer-section {
+    margin: 2rem 0 0 0;
     background-color: #110019a5;
     color: #ffffff;
 
@@ -74,16 +90,26 @@ button {
     font-family: "Montserrat", sans-serif;
 }
 
-#stop, #reset {
+#stop, #reset, #timeOver{
     display: none;
 }
 
-#start, #stop, #reset {
+#start, #stop, #reset, #timeOver {
     margin-bottom: 1rem;
 }
 
+#timeOver {
+    margin: 0.9rem 0 0.4rem 0;
+    text-align: center;
+    font-size: 1.9rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.3rem;
+    border: none;
+    font-family: "Roboto Mono", monospace;
+}
+
 .quotes-section {
-    margin: 4rem 0 0 0;
+    margin: 3rem 0 0 0;
     background-color: #ffffff;
     color: #000000;
 
@@ -92,13 +118,13 @@ button {
     border: 1px solid #06001012;
 }
 
-#quotes-text {
+#quote {
     text-align: center;
     font-family: "Montserrat", sans-serif;
     font-size: 1.35rem;
 }
 
-#quotes-writter {
+#author {
     margin-top: 1rem;
     font-family: "Roboto Mono", monospace;
     font-size: 1.15rem;
