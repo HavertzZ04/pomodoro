@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function shortBreakClick() {
-        setTimer(0.1); // Establecer el temporizador a 5 minutos
+        setTimer(5); // Establecer el temporizador a 5 minutos
         title.innerHTML = 'Descanso Corto';
         resetTimeChangingOption();
         timeOverParagraph.style.display = "none";
