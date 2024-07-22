@@ -15,8 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let timerRemaining = 25 * 60; // Default time 25 min
     let selectedTime = 25 * 60; // Selected Time
 
-    let alarmSound = new Audio('sounds/alarm.mp3'); // Alarm
-
+    let alarmSound = new Audio('sounds/alarm.mp3');
     function formatTime(seconds) {
         let minutes = Math.floor(seconds / 60);
         let secs = seconds % 60;
