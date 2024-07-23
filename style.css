@@ -10,7 +10,6 @@ html, body {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-
     display: flex;
     justify-content: center;
 }
@@ -19,12 +18,10 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: end;
-    
     background-color: #7B0000;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 1200 800'%3E%3Cdefs%3E%3CradialGradient id='a' cx='0' cy='800' r='800' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%23fb0030'/%3E%3Cstop offset='1' stop-color='%23fb0030' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='b' cx='1200' cy='800' r='800' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%23fb0030'/%3E%3Cstop offset='1' stop-color='%23fb0030' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='c' cx='600' cy='0' r='600' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%23ff7bae'/%3E%3Cstop offset='1' stop-color='%23ff7bae' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='d' cx='600' cy='800' r='600' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%237B0000'/%3E%3Cstop offset='1' stop-color='%237B0000' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='e' cx='0' cy='0' r='800' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%23FF7BAE'/%3E%3Cstop offset='1' stop-color='%23FF7BAE' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='f' cx='1200' cy='0' r='800' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%23FF7BAE'/%3E%3Cstop offset='1' stop-color='%23FF7BAE' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect fill='url(%23a)' width='1200' height='800'/%3E%3Crect fill='url(%23b)' width='1200' height='800'/%3E%3Crect fill='url(%23c)' width='1200' height='800'/%3E%3Crect fill='url(%23d)' width='1200' height='800'/%3E%3Crect fill='url(%23e)' width='1200' height='800'/%3E%3Crect fill='url(%23f)' width='1200' height='800'/%3E%3C/svg%3E");
     background-attachment: fixed;
     background-size: cover;
-
 }
 
 h1 {
@@ -61,7 +58,6 @@ input {
     color: aliceblue; 
     border: none;
     padding: 0.6rem 1.8rem;
-
 }
 
 #settings {
@@ -69,6 +65,10 @@ input {
     background-size: cover;
     padding: 1.2rem 1.25rem;
     margin-top: -6rem;
+}
+
+#settings:hover {
+    transform: scale(1.2);
 }
 
 section {
@@ -84,7 +84,6 @@ section {
     margin: 2rem 0 0 0;
     background-color: #3c000079;
     color: aliceblue;
-
     border-radius: 0.5rem;
     box-shadow: 0 8px 32px 0 rgba(27, 0, 14, 0.169);
     backdrop-filter: blur( 20px );
@@ -106,6 +105,11 @@ button {
     transition: all 0.3s ease;
     cursor: pointer;
     background-color: aliceblue;
+}
+
+button:hover {
+    transform: scale(1.08);
+
 }
 
 #timer {
@@ -137,7 +141,6 @@ button {
     margin: 3rem 0 0 0;
     background-color: aliceblue;
     color: #000000;
-
     border-radius: 0.5rem;
     box-shadow: 0 8px 32px 0 rgba(18, 0, 41, 0.297);
     border: 1px solid #06001012;
@@ -171,18 +174,35 @@ footer {
     bottom: 0;      
     left: 0;         
     width: 100%; 
-
     box-shadow: 0 8px 32px 0 rgba(27, 0, 14, 0.169);
     backdrop-filter: blur( 20px );
     -webkit-backdrop-filter: blur( 20px );
     border: 1px solid #06001012;
 }
 
-button:hover {
-    transform: scale(1.08);
 
+
+@media (max-width: 1550px) {
+    body {
+        justify-content: flex-start;
+    }
+
+    #settings {
+        margin-top: 2rem;
+    }
+
+    .quotes-section {
+        margin-bottom: 5rem;
+    }
+
+    footer {
+        background-color: #ffffff00;
+        padding: 1.25rem;
+        position: relative; 
+        box-shadow: 0 0 0 0 #00000000;
+        border: none;
+        backdrop-filter: blur( 0px );
+        -webkit-backdrop-filter: blur( 0px );
+    }
 }
 
-#settings:hover {
-    transform: scale(1.2);
-}
