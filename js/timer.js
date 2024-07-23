@@ -1,129 +1,156 @@
 document.addEventListener("DOMContentLoaded", () => {
-    let title = document.querySelector('h1');
-    
-    let startButton = document.querySelector('#start');
-    let stopButton = document.querySelector('#stop');
-    let resetButton = document.querySelector('#reset');
+    const title = document.querySelector('h1');
+    const startButton = document.querySelector('#start');
+    const stopButton = document.querySelector('#stop');
+    const resetButton = document.querySelector('#reset');
+    const focusButton = document.querySelector('#focus');
+    const shortBreakButton = document.querySelector('#short-break');
+    const longBreakButton = document.querySelector('#long-break');
+    const timeOverParagraph = document.querySelector('#timeOver');
+    const timerDisplay = document.querySelector('#timer');
+    const alarmSound = new Audio('sounds/alarm.mp3');
+    const settingsButton = document.querySelector('#settings');
 
-    let focusButton = document.querySelector('#focus');
-    let shortBreakButton = document.querySelector('#short-break');
-    let longBreakButton = document.querySelector('#long-break');
-    let timeOverParagraph = document.querySelector('#timeOver')
-
-    let timerDisplay = document.querySelector('#timer');
     let timer;
     let timerRemaining = 25 * 60; // Default time 25 min
-    let selectedTime = 25 * 60; // Selected Time
+    let selectedFocusTime = 25 * 60; // Default focus time
+    let selectedShortBreakTime = 5 * 60; // Default short break time
+    let selectedLongBreakTime = 15 * 60; // Default long break time
 
-    let alarmSound = new Audio('sounds/alarm.mp3');
-    function formatTime(seconds) {
-        let minutes = Math.floor(seconds / 60);
-        let secs = seconds % 60;
-        return `${String(minutes).padStart(1, '0')}:${String(secs).padStart(2, '0')}`;
-    }
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    };
 
-    function updateDisplay() {
+    const updateDisplay = () => {
         timerDisplay.textContent = formatTime(timerRemaining);
-    }
+    };
 
-    function startClick() { // inicia el pomodoro
-        startButton.style.display = "none";
-        stopButton.style.display = "inline-block";
-        resetButton.style.display = "inline-block";
+    const toggleButtons = (start, stop, reset) => {
+        startButton.style.display = start;
+        stopButton.style.display = stop;
+        resetButton.style.display = reset;
+    };
 
-
+    const startClick = () => {
+        toggleButtons("none", "inline-block", "inline-block");
         timer = setInterval(() => {
             if (timerRemaining > 0) {
                 timerRemaining--;
                 updateDisplay();
             } else {
                 alarmSound.play();
-                timeOverParagraph.innerHTML = "Terminaste tus 5 minutos de descanso"
-                timeOverParagraph.style.display ="inline-block"
-                startButton.style.display = "none";
-                stopButton.style.display = "none";
-                resetButton.style.display = "none";
+                timeOverParagraph.textContent = "Terminaste tus minutos";
+                timeOverParagraph.style.display = "inline-block";
+                toggleButtons("none", "none", "none");
                 clearInterval(timer);
             }
         }, 1000);
-    }
+    };
 
-    function stopClick() { //detiene el cronometro
+    const stopClick = () => {
         clearInterval(timer);
-        startButton.innerHTML = 'Continuar'; // Cambiar el texto para reanudar
-        startButton.style.display = "inline-block";
-        stopButton.style.display = "none";
-    }
+        startButton.textContent = 'Continuar'; // Change the text to continue
+        toggleButtons("inline-block", "none", "none");
+    };
 
-    function resetTimeChangingOption() { //reinicia los textos y el tiempo al seleccionar otra opcion cuando el reloj esta en marcha
+    const resetClick = () => {
         clearInterval(timer);
-        startButton.innerHTML = 'Iniciar'; // Cambiar el texto para reanudar
-        startButton.style.display = "inline-block";
-        stopButton.style.display = "none";
-        resetButton.style.display = "none";
-    }
-
-    function resetClick() { //reinicia el tiempo actual segun la option focus o breaks
-        clearInterval(timer);
-        timerRemaining = selectedTime; // Reiniciar al tiempo seleccionado
+        timerRemaining = getSelectedTime(); // Restart the selected time
         updateDisplay();
-        title.innerHTML = getTitleFromTime(selectedTime);
-        startButton.innerHTML = 'Iniciar';
-        startButton.style.display = "inline-block";
-        stopButton.style.display = "none";
-        resetButton.style.display = "none";
-    }
+        title.textContent = getTitleFromTime(timerRemaining);
+        startButton.textContent = 'Iniciar';
+        toggleButtons("inline-block", "none", "none");
+    };
 
-    function setTimer(minutes) { //nos dice cuanto va a durar cada opcion
-        selectedTime = minutes * 60;
-        timerRemaining = selectedTime;
+    const getSelectedTime = () => {
+        switch (title.textContent) {
+            case 'Pomodoro': return selectedFocusTime;
+            case 'Descanso Corto': return selectedShortBreakTime;
+            case 'Descanso Largo': return selectedLongBreakTime;
+            default: return selectedFocusTime;
+        }
+    };
+
+    const setTimer = (minutes) => {
+        timerRemaining = minutes * 60;
         updateDisplay();
-    }
+    };
 
-    function getTitleFromTime(seconds) { // Titulo segun la option
-        if (seconds === 25 * 60) return 'Pomodoro';
-        if (seconds === 5 * 60) return 'Descanso Corto';
-        if (seconds === 15 * 60) return 'Descanso Largo';
-        return 'Pomodoro';
-    }
+    const getTitleFromTime = (seconds) => {
+        switch (seconds) {
+            case selectedFocusTime: return 'Pomodoro';
+            case selectedShortBreakTime: return 'Descanso Corto';
+            case selectedLongBreakTime: return 'Descanso Largo';
+            default: return 'Pomodoro';
+        }
+    };
 
-    function rebootAlarm() {
+    const rebootAlarm = () => {
         alarmSound.pause();
         alarmSound.currentTime = 0;
-    }
+    };
 
-    function focusClick() {
-        setTimer(25); // Establecer el temporizador a 25 minutos
-        title.innerHTML = 'Pomodoro';
-        resetTimeChangingOption();
+    const handleClick = (minutes, titleText) => {
+        setTimer(minutes);
+        title.textContent = titleText;
+        resetClick();
         timeOverParagraph.style.display = "none";
         rebootAlarm();
-    }
+    };
 
-    function shortBreakClick() {
-        setTimer(5); // Establecer el temporizador a 5 minutos
-        title.innerHTML = 'Descanso Corto';
-        resetTimeChangingOption();
-        timeOverParagraph.style.display = "none";
-        rebootAlarm();
-    }
-
-    function longBreakClick() {
-        setTimer(15); // Establecer el temporizador a 15 minutos
-        title.innerHTML = 'Descanso Largo';
-        resetTimeChangingOption();
-        timeOverParagraph.style.display = "none";
-        rebootAlarm();
-    }
+    focusButton.addEventListener("click", () => handleClick(selectedFocusTime / 60, 'Pomodoro'));
+    shortBreakButton.addEventListener("click", () => handleClick(selectedShortBreakTime / 60, 'Descanso Corto'));
+    longBreakButton.addEventListener("click", () => handleClick(selectedLongBreakTime / 60, 'Descanso Largo'));
 
     startButton.addEventListener("click", startClick);
     stopButton.addEventListener("click", stopClick);
     resetButton.addEventListener("click", resetClick);
 
-    focusButton.addEventListener("click", focusClick);
-    shortBreakButton.addEventListener("click", shortBreakClick);
-    longBreakButton.addEventListener("click", longBreakClick);
-});
+    // Popup logic using SweetAlert2
+    settingsButton.addEventListener("click", () => {
+        Swal.fire({
+            title: '<h2>Configurar tiempos</h2>',
+            html:
+                '<input type="number" id="focusTime" class="swal2-input" value="' + (selectedFocusTime / 60) + '"><br>'+
+                '<label for="focusTime">Tiempo de Enfoque (min):</label>'+
+                '<input type="number" id="shortBreakTime" class="swal2-input" value="' + (selectedShortBreakTime / 60) + '"><br>'+
+                '<label for="shortBreakTime">Descanso Corto (min):</label>'+
+                '<input type="number" id="longBreakTime" class="swal2-input" value="' + (selectedLongBreakTime / 60) + '"><br>'+
+                '<label for="longBreakTime">Descanso Largo (min):</label>',
+            focusConfirm: false,
+            preConfirm: () => {
+                return {
+                    focusTime: parseInt(document.getElementById('focusTime').value) || selectedFocusTime / 60,
+                    shortBreakTime: parseInt(document.getElementById('shortBreakTime').value) || selectedShortBreakTime / 60,
+                    longBreakTime: parseInt(document.getElementById('longBreakTime').value) || selectedLongBreakTime / 60
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const { focusTime, shortBreakTime, longBreakTime } = result.value;
 
+                selectedFocusTime = focusTime * 60;
+                selectedShortBreakTime = shortBreakTime * 60;
+                selectedLongBreakTime = longBreakTime * 60;
+
+                // Update button functionality
+                focusButton.addEventListener("click", () => handleClick(selectedFocusTime / 60, 'Pomodoro'));
+                shortBreakButton.addEventListener("click", () => handleClick(selectedShortBreakTime / 60, 'Descanso Corto'));
+                longBreakButton.addEventListener("click", () => handleClick(selectedLongBreakTime / 60, 'Descanso Largo'));
+                
+                // Update timer display immediately
+                if (title.textContent === 'Pomodoro') {
+                    setTimer(selectedFocusTime / 60);
+                } else if (title.textContent === 'Descanso Corto') {
+                    setTimer(selectedShortBreakTime / 60);
+                } else if (title.textContent === 'Descanso Largo') {
+                    setTimer(selectedLongBreakTime / 60);
+                }
+            }
+        });
+    });
+});
 
 export default {};
